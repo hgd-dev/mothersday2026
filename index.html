@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mother's Day Surprise</title>
+  <style>
+    :root {
+      --bg-start: #fff1f5;
+      --bg-end: #ffe4ec;
+      --pink: #e75480;
+      --deep-pink: #c43f66;
+      --card: #fffaf7;
+      --ink: #4b2b33;
+      --muted: #7b5961;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top, var(--bg-start), var(--bg-end));
+      overflow-x: hidden;
+    }
+
+    .screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .open-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 18px 34px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--deep-pink));
+      box-shadow: 0 18px 35px rgba(196, 63, 102, 0.28);
+      cursor: pointer;
+      transform: translateY(0);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      letter-spacing: 0.02em;
+    }
+
+    .open-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 45px rgba(196, 63, 102, 0.35);
+    }
+
+    .card-wrap {
+      width: min(950px, 96vw);
+      perspective: 1200px;
+      animation: cardIn 800ms ease both;
+    }
+
+    .card-title {
+      text-align: center;
+      margin: 0 0 22px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--deep-pink);
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      background: var(--card);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 28px 80px rgba(128, 55, 75, 0.22);
+      border: 1px solid rgba(196, 63, 102, 0.14);
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(transparent, rgba(128, 55, 75, 0.22), transparent);
+      z-index: 2;
+    }
+
+    .page {
+      padding: clamp(24px, 4vw, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .left-page {
+      background: linear-gradient(135deg, #fff7fa, #fff0f4);
+    }
+
+    .image-frame {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 24px;
+      padding: 14px;
+      background: white;
+      box-shadow: 0 16px 38px rgba(128, 55, 75, 0.16);
+      transform: rotate(-1deg);
+    }
+
+    .image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 18px;
+      display: block;
+    }
+
+    .message {
+      max-width: 360px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .message h2 {
+      margin: 0 0 18px;
+      color: var(--deep-pink);
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+    }
+
+    .message p {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .signature {
+      margin-top: 24px;
+      font-size: 1.45rem;
+      color: var(--ink);
+      font-style: italic;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(231, 84, 128, 0.2);
+      font-size: 42px;
+      user-select: none;
+    }
+
+    .heart.one { top: 22px; right: 28px; }
+    .heart.two { bottom: 22px; left: 28px; transform: rotate(-18deg); }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      width: 10px;
+      height: 16px;
+      opacity: 0.9;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 10;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(28px) rotateX(8deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0.95;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .card {
+        grid-template-columns: 1fr;
+      }
+
+      .card::before {
+        display: none;
+      }
+
+      .card-title {
+        font-size: 2.3rem;
+      }
+
+      .page {
+        min-height: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section id="startScreen" class="screen">
+      <button class="open-button" id="openButton">Open Surprise 💐</button>
+    </section>
+
+    <section id="cardScreen" class="screen hidden">
+      <div class="card-wrap">
+        <h1 class="card-title">Happy Mother's Day</h1>
+
+        <article class="card" aria-label="Mother's Day card">
+          <section class="page left-page">
+            <div class="image-frame">
+              <!-- Replace this file with your own image, or change the src to your image filename. -->
+              <img src="mom-photo.jpg" alt="A special Mother's Day photo" />
+            </div>
+          </section>
+
+          <section class="page right-page">
+            <span class="heart one">♥</span>
+            <span class="heart two">♥</span>
+
+            <div class="message">
+              <h2>To the best mom,</h2>
+              <p>
+                Thank you for your love, your patience, your warmth, and every little thing you do that makes life feel brighter.
+              </p>
+              <p>
+                I hope today reminds you how deeply loved and appreciated you are.
+              </p>
+              <div class="signature">Love, Hudson</div>
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const openButton = document.getElementById("openButton");
+    const startScreen = document.getElementById("startScreen");
+    const cardScreen = document.getElementById("cardScreen");
+
+    const colors = ["#e75480", "#ffb3c6", "#ffd166", "#95d5b2", "#a2d2ff", "#cdb4db"];
+
+    function makeConfetti() {
+      for (let i = 0; i < 140; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = `${2.5 + Math.random() * 3.5}s`;
+        piece.style.animationDelay = `${Math.random() * 0.8}s`;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        piece.style.borderRadius = Math.random() > 0.5 ? "999px" : "2px";
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 7000);
+      }
+    }
+
+    openButton.addEventListener("click", () => {
+      startScreen.classList.add("hidden");
+      cardScreen.classList.remove("hidden");
+      makeConfetti();
+
+      // Optional: repeat a smaller burst a moment later.
+      setTimeout(makeConfetti, 900);
+    });
+  </script>
+</body>
+</html>
